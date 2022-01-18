@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useAuthContext } from './hooks/useAuthContext';
 
 // styles
 import './App.css'
@@ -10,23 +11,64 @@ import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup';
 import Project from './pages/project/Project';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 
 
 function App() {
+  const { user, authIsReady } = useAuthContext()
+
   return (
     <div className="App">
-      <BrowserRouter>
-      <Navbar />
-        <div className="container">
-          <Routes>
-            <Route exact path="/" element={<Dashboard />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/project:id" element={<Project />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      {authIsReady && (
+        <BrowserRouter>
+          {user && <Sidebar />}
+          <div className="container">
+            <Navbar />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <>
+                    {user && <Dashboard />}
+                    {!user && <Navigate to={'/login'} />}
+                  </>
+                }
+              />
+              <Route
+                path="/create"
+                element={
+                  <>
+                    {user && <Create />}
+                    {!user && <Navigate to={'/login'} />}
+                  </>
+                }
+              />
+              <Route
+                path="/project:id"
+                element={
+                  <>
+                    {user && <Project />}
+                    {!user && <Navigate to={'/login'} />}
+                  </>
+                }
+              />
+              <Route path="/login" element={
+                <>
+                  {!user && <Login />}
+                  {user && <Navigate to={'/'} />}
+                </>} 
+              />
+              <Route path="/signup" element={
+                <>
+                  {!user && <Signup />}
+                  {user && <Navigate to={'/'} />}
+                </>} 
+              />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      )}
     </div>
   );
 }
