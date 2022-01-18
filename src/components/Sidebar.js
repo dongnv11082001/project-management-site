@@ -11,7 +11,7 @@ import Avatar from './Avatar';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Sidebar() {
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
 
   return (
     <SidebarContainer className="sidebar">
@@ -60,12 +60,19 @@ const User = styled.div`
   letter-spacing: 1px;
   padding: 40px 30px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  & .avatar {
+    margin-bottom: 10px;
+    width: 70px;
+    height: 70px;
+    border: 3px solid #fff;
+  }
 `;
 
 const SidebarLinks = styled.nav`
-    margin-top: 80px;
-    margin-left: 20px;
-    
+  margin-top: 80px;
+  margin-left: 20px;
+
   & li {
     margin-top: 10px;
   }
