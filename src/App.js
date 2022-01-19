@@ -46,7 +46,7 @@ function App() {
                 }
               />
               <Route
-                path="/project:id"
+                path="/projects/:id"
                 element={
                   <>
                     {user && <Project />}
